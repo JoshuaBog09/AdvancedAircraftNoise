@@ -37,7 +37,7 @@ figure();
 % steps containing the seconds input amount of data. when the value is the
 % same no padding will be added
 spectrogram(y, N, 0, N+padding, samplefrequency, 'yaxis')
-colormap turbo
+colormap jet
 
 %% Part III
 % Extract values from the plot, generated previously in part II
@@ -49,4 +49,29 @@ figure();
 plot(T, pe)
 
 %% Part IV
+% time resolution
+time_reso = 0.125;   % 0.125 seconds time resolution
+padding = 0;
 
+N = time_reso*samplefrequency;
+freq_resolution = 1 / time_reso;
+
+figure();
+spectrogram(y, N, 0, N+padding, samplefrequency, 'yaxis')
+colormap winter
+
+[S, F, T, P] = spectrogram(y, N, 0, N+padding, samplefrequency, 'yaxis');
+
+% select signal inbetween 10.500 seconds and 10.625 seconds
+% (10.625 + 10.500) / 2 == > 10.5625 (This can be observed to be located 
+% @ index 85 of the Time array (T))
+
+S_85 = S(:,85);     % Fourier transform
+P_85 = P(:,85);
+
+pr = (samplefrequency*abs(S_85).^2)/N;
+
+figure();
+plot(pr)
+
+% Look into fft
