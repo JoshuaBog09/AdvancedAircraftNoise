@@ -75,3 +75,13 @@ figure();
 plot(pr)
 
 % Look into fft
+%% Part IV Method 2
+time_reso = 0.125;   % 0.125 seconds time resolution
+padding = 0;
+
+N = time_reso*samplefrequency;
+freq_resolution = 1 / time_reso;
+f = 0 : 
+
+
+
