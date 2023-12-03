@@ -93,8 +93,8 @@ psd = (time_resolution^2/time_reso(end))*(abs(Y).^2);
 
 
 figure(1);
-plot(f, PSD, '+k'); h = get(gcf, 'Children'); set(h, fontsize, '14'); xlabel('frequency');
-ylabel('PSD'); title('PSD 0-40k'); grid; axis([0 samplefrequency 0 0.1])
+plot(f, psd, '+k'); xlabel('frequency');
+ylabel('PSD'); title('PSD 0-40k'); grid; axis([0 samplefrequency 0 0.015])
 
 % Half sided 
 
@@ -102,6 +102,8 @@ f_half = 0:freq_resolution:(N-1)*freq_resolution/2;
 psd_half = ((1/sqrt(2))^2) * (2^2) * psd(1:length(f_half));
 
 figure(2);
-plot(f_half, psd_half, '+k'); h = get(gcf, 'Children'); set(h, fontsize, '14'); xlabel('frequency');
-ylabel('PSD'); title('PSD 0-40k'); grid; axis([0 samplefrequency 0 0.1])
+plot(f_half, psd_half, '+k'); xlabel('frequency');
+ylabel('PSD'); title('PSD 0-40k'); grid; axis([0 samplefrequency 0 0.02])
+
+%% Part V
 
