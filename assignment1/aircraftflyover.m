@@ -4,16 +4,15 @@
 clear;
 
 load('aircraft_flyover_microphone_assignment1.mat');
-
 y = aircraft_flyover_microphone_assignment1;
 
 t_begin = 0;
 samplefrequency = 40000;
-samplerate = 1 / samplefrequency;
+time_resolution = 1 / samplefrequency;
 
-t_end = samplerate*length(y) - samplerate;
+t_end = time_resolution*length(y) - time_resolution;
 
-t = t_begin:samplerate:t_end;
+t = t_begin:time_resolution:t_end;
 
 %% Part I: Figure 1 --> pressure over time
 figure();
@@ -22,7 +21,7 @@ plot(t,y)
 %% Part II
 
 % time resolution
-time_reso = 0.05;   % 0.05 seconds time resolution
+time_reso = 0.075;   % 0.05 seconds time resolution
 padding = 0;
 
 N = time_reso*samplefrequency;
@@ -81,7 +80,6 @@ padding = 0;
 
 N = time_reso*samplefrequency;
 freq_resolution = 1 / time_reso;
-f = 0 : 
+f = 0; 
 
-
-
+res = fft(y);
