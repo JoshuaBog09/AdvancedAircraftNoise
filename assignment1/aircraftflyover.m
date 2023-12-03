@@ -93,7 +93,7 @@ PSD = (time_resolution^2/time_reso(end))*(abs(Y).^2);
 
 figure()
 plot(f, PSD, '+k'); h = get(gcf, 'Children'); set(h, fontsize, '14'); xlabel('frequency');
-ylabel('PSD'); title('PSD 0-40k'); gird; axis([0 samplefrequency 0 0.1])
+ylabel('PSD'); title('PSD 0-40k'); grid; axis([0 samplefrequency 0 0.1])
 
 
 
