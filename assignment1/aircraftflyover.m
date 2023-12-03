@@ -88,3 +88,8 @@ id = 85;
 pressure_85 = y(1 + id*N: (id+1)*N);
 fourier_coef = fft(pressure_85);
 
+
+% Half sided 
+
+f_half = 0:freq_resolution:(N-1)*freq_resolution/2;
+psd_half = ((1/sqrt(2))^2) * (2^2) * psd(1:length(f_half));
