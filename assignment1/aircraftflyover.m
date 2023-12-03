@@ -79,6 +79,14 @@ padding = 0;
 
 N = time_reso*samplefrequency;
 freq_resolution = 1 / time_reso;
+t_array = 0:time_reso:t_end;
+% index 85 returns 10.500 seconds to 10.625 seconds
+id = 85;
+
+pressure_85 = y(1 + id*N: (id+1)*N);
+fourier_coef = fft(pressure_85);
+Y = fourier_coef;
+
 f = 0: freq_resolution: (N-1)*freq_resolution; %create the frequency x-axis
 PSD = (time_resolution^2/time_reso(end))*(abs(Y).^2);
 
@@ -88,21 +96,4 @@ plot(f, PSD, '+k'); h = get(gcf, 'Children'); set(h, fontsize, '14'); xlabel('fr
 ylabel('PSD'); title('PSD 0-40k'); gird; axis([0 samplefrequency 0 0.1])
 
 
-
-
-
-
-
-
-
-
-
-
-
-t_array = 0:time_reso:t_end;
-% index 85 returns 10.500 seconds to 10.625 seconds
-id = 85;
-
-pressure_85 = y(1 + id*N: (id+1)*N);
-fourier_coef = fft(pressure_85);
 
