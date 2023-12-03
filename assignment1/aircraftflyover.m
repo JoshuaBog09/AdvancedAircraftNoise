@@ -73,7 +73,6 @@ pr = (samplefrequency*abs(S_85).^2)/N;
 figure();
 plot(pr)
 
-% Look into fft
 %% Part IV Method 2
 time_reso = 0.125;   % 0.125 seconds time resolution
 padding = 0;
@@ -82,4 +81,10 @@ N = time_reso*samplefrequency;
 freq_resolution = 1 / time_reso;
 f = 0; 
 
-res = fft(y);
+t_array = 0:time_reso:t_end;
+% index 85 returns 10.500 seconds to 10.625 seconds
+id = 85;
+
+pressure_85 = y(1 + id*N: (id+1)*N);
+fourier_coef = fft(pressure_85);
+
