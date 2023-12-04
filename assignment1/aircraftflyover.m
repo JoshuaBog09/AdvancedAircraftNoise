@@ -147,6 +147,34 @@ legend("time sampled OSPL", "frequency sampled OSPL")
 % of the frequencies due to doubling of Pr this takes into acount the equal
 % peak at the negative side.
 
+OASPL = zeros(1,146);
+
+peo2 = (2*10^(-5))^2; 
+
+f_range = f(1:2500);
+
+dLa = -145.528 + 98.262 * log10(f_range) - 19.509 * (log10(f_range)).^2 + 0.975 * (log10(f_range)).^3;
+
+for id=1:1:146
+    pressure = y(1 + (id-1)*N: (id)*N);
+    pressure_fft = fft(pressure);
+
+    psd = (time_resolution^2/time_reso)*(abs(pressure_fft).^2);
+
+    pslr = 10*log10(2*psd(1:2500)/peo2);
+
+    la = pslr + dLa;
+
+    OASPL(id) = 10*log10(freq_resolution*sum(10.^(la/10)));
+end
+
+figure();
+hold on
+plot(t_array, OSPL_time, "-k")
+plot(t_array, OSPL_freq, "ob")
+plot(t_array, OASPL)
+legend("time sampled OSPL", "frequency sampled OSPL", "OASPL")
+
 %% Part VII
 
 % Perform integration with over bounds with 10db down time
