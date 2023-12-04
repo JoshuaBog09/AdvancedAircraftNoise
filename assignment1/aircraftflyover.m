@@ -16,7 +16,11 @@ t = t_begin:time_resolution:t_end;
 
 %% Part I: Figure 1 --> pressure over time
 figure();
-plot(t,y)
+plot(t,y, ...
+    Color="#80B3FF")
+xlabel('time [s]')
+ylabel('pressure [pa]')
+legend("Pressure data")
 
 %% Part II
 
@@ -36,7 +40,7 @@ figure();
 % steps containing the seconds input amount of data. when the value is the
 % same no padding will be added
 spectrogram(y, N, 0, N+padding, samplefrequency, 'yaxis')
-colormap jet
+colormap winter
 
 %% Part III
 % Extract values from the plot, generated previously in part II
@@ -45,7 +49,15 @@ colormap jet
 pe = sqrt(freq_resolution.*sum(P));
 
 figure();
-plot(T, pe)
+hold on
+plot(t,y, ...
+    Color="#80B3FF")
+plot(T, pe, ...
+    Color="#D95319",...
+    LineWidth=1.5)
+xlabel('time [s]')
+ylabel('pressure [pa]')
+legend("Pressure data", "Effective pressure")
 
 %% Part IV
 % time resolution
