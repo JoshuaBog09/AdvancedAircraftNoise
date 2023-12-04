@@ -83,14 +83,12 @@ t_array = 0:time_reso:t_end;
 % index 85 returns 10.500 seconds to 10.625 seconds
 id = 85;
 
-pressure_85 = y(1 + id*N: (id+1)*N);
+pressure_85 = y(1 + (id-1)*N: (id)*N);
 fourier_coef = fft(pressure_85);
 Y = fourier_coef;
 
 f = 0: freq_resolution: (N-1)*freq_resolution; %create the frequency x-axis
 psd = (time_resolution^2/time_reso(end))*(abs(Y).^2);
-
-
 
 figure(1);
 plot(f, psd, '+k'); xlabel('frequency');
@@ -107,3 +105,49 @@ ylabel('PSD'); title('PSD 0-40k'); grid; axis([0 samplefrequency 0 0.02])
 
 %% Part V
 
+OSPL_time = zeros(1,146);
+OSPL_freq = zeros(1,146);
+
+peo2 = (2*10^(-5))^2; 
+
+for id=1:1:146
+    pressure = y(1 + (id-1)*N: (id)*N);
+    pressure_fft = fft(pressure);
+    
+    psd = (time_resolution^2/time_reso)*(abs(pressure_fft).^2);
+
+    pe2_time = sum(pressure.^2)*time_resolution / time_reso;
+    OSPL_time(id) = 10*log10(pe2_time/peo2);
+    
+    pe2_freq = freq_resolution*sum(2*psd(1:2500));
+    OSPL_freq(id) = 10*log10(pe2_freq/peo2);
+end
+
+% pe2_time = sum(pressure_85.^2)*time_resolution / time_reso;
+% OSPL_time = 10*log10(pe2_time/peo2);
+% 
+% pe2_freq = freq_resolution*sum(2*psd(1:2500));
+% OSPL_freq = 10*log10(pe2_freq/peo2);
+
+figure();
+hold on
+plot(t_array, OSPL_time, "-k")
+plot(t_array, OSPL_freq, "ob")
+legend("time sampled OSPL", "frequency sampled OSPL")  
+
+%% Part VI
+
+% Procedure: To be used in for Part VI
+% f(1:2500) <-- only half of the frequencies are considered
+% for all of these frequencies the dla can be found
+% dLa = -145.528 + 98.262 * log(f) - 19.509 * (log(f))^2 + 0.975 * (log(f))^3;
+% La = PSL - dla
+% where PSL = 10 log (2Pr/peo2)
+% then oaspl = 10 log (deltaf * sum (10^La/10) ) Only performed over half
+% of the frequencies due to doubling of Pr this takes into acount the equal
+% peak at the negative side.
+
+%% Part VII
+
+% Perform integration with over bounds with 10db down time
+% wher T1 is equal to one
