@@ -151,7 +151,7 @@ OASPL = zeros(1,146);
 
 peo2 = (2*10^(-5))^2; 
 
-f_range = f(1:2500);
+f_range = f(1:2500) + 4;
 
 dLa = -145.528 + 98.262 * log10(f_range) - 19.509 * (log10(f_range)).^2 + 0.975 * (log10(f_range)).^3;
 
@@ -179,3 +179,17 @@ legend("time sampled OSPL", "frequency sampled OSPL", "OASPL")
 
 % Perform integration with over bounds with 10db down time
 % wher T1 is equal to one
+
+LaMax = max(OASPL);
+
+db_down_time = 10;
+
+OASPL_10 = OASPL(OASPL > LaMax - db_down_time);
+% Selected_DBa_time = t_array(OASPL > LaMax - db_down_time);
+% 
+% figure();
+% hold on
+% plot(t_array, OASPL)
+% plot(Selected_DBa_time, Selected_DBa)
+
+SEL = 10*log10(sum(10.^(OASPL_10/10))*time_reso);
