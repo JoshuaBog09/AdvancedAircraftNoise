@@ -15,8 +15,11 @@ t_end = time_resolution*length(y) - time_resolution;
 t = t_begin:time_resolution:t_end;
 
 %% Part I: Figure 1 --> pressure over time
-figure();
-plot(t,y)
+figure(1);
+plot(t,y);
+title('Aircraft Flyover - Signal vs Time');
+xlabel('time');
+ylabel('Pa');
 
 %% Part II
 
@@ -27,7 +30,7 @@ padding = 0;
 N = time_reso*samplefrequency;
 freq_resolution = 1 / time_reso;
 
-figure();
+figure(2);
 % Second value represent the steps whcha re taken to analyse the data,
 % larger values will lead to bigger blocks in the time axis, but smaller in
 % the frequency axis (note: equally true when making thee value smaller)
@@ -44,37 +47,12 @@ colormap jet
 
 pe = sqrt(freq_resolution.*sum(P));
 
-figure();
+figure(3);
 plot(T, pe)
 
-%% Part IV
-% time resolution
-time_reso = 0.125;   % 0.125 seconds time resolution
-padding = 0;
 
-N = time_reso*samplefrequency;
-freq_resolution = 1 / time_reso;
-
-figure();
-spectrogram(y, N, 0, N+padding, samplefrequency, 'yaxis')
-colormap winter
-
-[S, F, T, P] = spectrogram(y, N, 0, N+padding, samplefrequency, 'yaxis');
-
-% select signal inbetween 10.500 seconds and 10.625 seconds
-% (10.625 + 10.500) / 2 == > 10.5625 (This can be observed to be located 
-% @ index 85 of the Time array (T))
-
-S_85 = S(:,85);     % Fourier transform
-P_85 = P(:,85);
-
-pr = (samplefrequency*abs(S_85).^2)/N;
-
-figure();
-plot(pr)
-
-%% Part IV Method 2
-time_reso = 0.125;   % 0.125 seconds time resolution
+%% Part IV 
+time_reso = 0.125;   % 0.125 seconds
 padding = 0;
 
 N = time_reso*samplefrequency;
@@ -90,18 +68,18 @@ Y = fourier_coef;
 f = 0: freq_resolution: (N-1)*freq_resolution; %create the frequency x-axis
 psd = (time_resolution^2/time_reso(end))*(abs(Y).^2);
 
-figure(1);
+figure(5);
 plot(f, psd, '+k'); xlabel('frequency');
-ylabel('PSD'); title('PSD 0-40k'); grid; axis([0 samplefrequency 0 0.015])
+ylabel('PSD'); title('PSD 0-40kHz'); grid; axis([0 samplefrequency 0 0.02])
 
 % Half sided 
 
 f_half = 0:freq_resolution:(N-1)*freq_resolution/2;
 psd_half = ((1/sqrt(2))^2) * (2^2) * psd(1:length(f_half));
 
-figure(2);
+figure(6);
 plot(f_half, psd_half, '+k'); xlabel('frequency');
-ylabel('PSD'); title('PSD 0-40k'); grid; axis([0 samplefrequency 0 0.02])
+ylabel('PSD'); title('PSD 0-20kHz'); grid; axis([0 samplefrequency 0 0.02])
 
 %% Part V
 
@@ -129,7 +107,7 @@ end
 % pe2_freq = freq_resolution*sum(2*psd(1:2500));
 % OSPL_freq = 10*log10(pe2_freq/peo2);
 
-figure();
+figure(7);
 hold on
 plot(t_array, OSPL_time, "-k")
 plot(t_array, OSPL_freq, "ob")
@@ -168,7 +146,7 @@ for id=1:1:146
     OASPL(id) = 10*log10(freq_resolution*sum(10.^(la/10)));
 end
 
-figure();
+figure(8);
 hold on
 plot(t_array, OSPL_time, "-k")
 plot(t_array, OSPL_freq, "ob")
