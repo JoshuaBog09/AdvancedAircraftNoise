@@ -25,7 +25,10 @@ Xr = fft(xk);
 peak1 = abs(Xr(14)) / 1;
 peak2 = abs(Xr(17)) / 0.1;
 
+figure(1);
 plot(fr, abs(Xr))
+xlabel('frequency [Hz]')
+ylabel('|Xr|')
 
 %% Part II
 
@@ -41,7 +44,10 @@ k_padded = 0:1:N_padded-1;
 Xr_padded = fft(xk_padded);
 fr_padded = k_padded / (N_padded*delta);
 
+figure(2);
 plot(fr_padded, abs(Xr_padded))
+xlabel('frequency [Hz]')
+ylabel('|Xr|')
 
 peak1_padded = abs(Xr_padded(206))/1;
 peak2_padded = abs(Xr_padded(257))/0.1;
@@ -56,8 +62,10 @@ hanning_weighting = hann(N).';
 xk_weighted = xk.*hanning_weighting;
 fr = k / (N*delta);
 
-figure();
+figure(3);
 plot(fr, xk_weighted)
+xlabel('frequency [Hz]')
+ylabel('xk')
 
 xk_weighted_padded = resize(xk_weighted, 2048);
 
@@ -67,8 +75,10 @@ k_padded = 0:1:N_padded-1;
 Xr_weighted_padded = fft(xk_weighted_padded);
 fr_weighted_padded = k_padded / (N_padded*delta);
 
-figure();
+figure(4);
 plot(fr_weighted_padded, abs(Xr_weighted_padded))
+xlabel('frequency [Hz]')
+ylabel('|Xr|')
 
 peak1_weighted = abs(Xr_weighted_padded(206));
 peak2_weighted = abs(Xr_weighted_padded(250)) / 0.1;
