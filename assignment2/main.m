@@ -44,7 +44,7 @@ fr_padded = k_padded / (N_padded*delta);
 plot(fr_padded, abs(Xr_padded))
 
 peak1_padded = abs(Xr_padded(206))/1;
-peak2_padded = abs(Xr_padded(257))/0.1;
+peak2_padded = abs(Xr_padded(260))/0.1;
 
 %% Part III
 
@@ -57,7 +57,17 @@ xk_weighted = xk.*hanning_weighting;
 fr = k / (N*delta);
 
 figure();
-plot(fr, xk_weighted)
+hold on
+plot(k, xk)
+plot(k, hanning_weighting, "k--")
+xlabel("Time [ms]")
+ylabel("Xk [-]")
+legend("Original Signal", "Weighting function")
+
+figure();
+plot(k, xk_weighted)
+xlabel("Time [ms]")
+ylabel("Xk [-]")
 
 xk_weighted_padded = resize(xk_weighted, 2048);
 
