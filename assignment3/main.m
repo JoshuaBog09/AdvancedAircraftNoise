@@ -58,9 +58,9 @@ D = (3/2)*(sin(theta))^2;
 psquared_lg = (rho*c*P*D*F) / (4*(pi^2)*(r^2)*(1-M*cos(theta))^4);
 
 %% Flaps formulas
-K = 2.787*10-4;
+K = 2.787*10^(-4);
 a = 6;
-G = A_f/b_f^2*(sin(delta_f))^2;
+G = (A_f/(b_w^2))*(sin(delta_f))^2;
 L = A_f/b_f;
 
 % Power function
@@ -95,7 +95,7 @@ P = K*(M^a)*G*rho*(c^3)*(b_w^2);
 S = (f * L * (1 - M*cos(theta))) / (M*c);
 
 % Spectral function
-F = 0.613 .* ((10*S).^4) .* (((10*S).^(1.5)) + 0.5).^(-4);
+F = 0.613 * ((10*S).^4) .* (((10*S).^(1.5)) + 0.5).^(-4);
 
 % Directivity funtion
 D = 4 * (cos(phi)^2) * (cos(theta / 2)^2);
@@ -117,8 +117,8 @@ P = K*(M^a)*G*rho*(c^3)*(b_w^2);
 S = (f * L * (1 - M*cos(theta))) / (M*c);
 
 % Spectral function
-F = (0.613 .* ((10*S).^4) .* (((10*S).^(1.5)) + 0.5).^(-4)) ...
-    + (0.613 .* ((2.19*S).^(4)) .* (((2.19*S).^1.5) + 0.5).^(-4));
+F = (0.613 * ((10*S).^4) .* (((10*S).^(1.5)) + 0.5).^(-4)) ...
+    + (0.613 * ((2.19*S).^(4)) .* (((2.19*S).^1.5) + 0.5).^(-4));
 
 % Directivity funtion
 D = 4 * (cos(phi)^2) * (cos(theta / 2)^2);
@@ -139,6 +139,14 @@ res_fl = 10*log10((psquared_fl ./ f) / (2*10^(-5))^2);
 res_sl = 10*log10((psquared_sl ./ f) / (2*10^(-5))^2);
 res_lg = 10*log10((psquared_lg ./ f) / (2*10^(-5))^2);
 
+res_wg = res_wg + 10*log10(0.23*f);
+res_fl = res_fl + 10*log10(0.23*f);
+res_sl = res_sl + 10*log10(0.23*f);
+res_lg = res_lg + 10*log10(0.23*f);
+
+% Pa^2 (output of previous parts of the code)
+% P
+
 % res = 10*log10(psquared ./ f) - 10*log10(0.23*f);
 
 % res = 10*log10(psquared ./ f);
@@ -151,3 +159,12 @@ semilogx(f, res_sl)
 semilogx(f, res_lg)
 legend("Wing", "Flaps", "Slats", "Landing gear")
 
+%% Next set of ex
+
+OSPL = 10 * log10((psquared_wg + psquared_fl + psquared_sl + psquared_lg) / (2*10^(-5))^2);
+
+figure();
+semilogx(f,OSPL)
+hold on
+semilogx(data(1,:), data(2,:))
+legend("Modeled", "Measured")
