@@ -29,7 +29,9 @@ M = v/c;
 band_numbers = 1:1:43;
 f = 10.^(band_numbers/10);
 
+% assumed values
 theta = pi / 2;
+phi = 0;
 r = 1;
 
 %% Formulas
@@ -53,6 +55,52 @@ D = (3/2)*(sin(theta))^2;
 
 % 
 psquared = (rho*c*P*D*F) / (4*(pi^2)*(r^2)*(1-M*cos(theta))^4);
+
+%% Formulas (wing)
+K = 4.464*10^(-5);
+a = 5;
+G = 0.37*(A_w / b_w^2)*((rho*M*c*A_w) / (mu*b_w))^(-0.2);
+L = G*b_w;
+
+% Power function
+P = K*(M^a)*G*rho*(c^3)*(b_w^2);
+
+% Strouhal number
+S = (f * L * (1 - M*cos(theta))) / (M*c);
+
+% Spectral function
+F = 0.613 .* ((10*S).^4) .* (((10*S).^(1.5)) + 0.5).^(-4);
+
+% Directivity funtion
+D = 4 * (cos(phi)^2) * (cos(theta / 2)^2);
+
+% 
+psquared = (rho*c*P*D*F) / (4*(pi^2)*(r^2)*(1-M*cos(theta))^4);
+
+%% Formulas (slats)
+
+K = 4.464*10^(-5);
+a = 5;
+G = 0.37*(A_w / b_w^2)*((rho*M*c*A_w) / (mu*b_w))^(-0.2);
+L = G*b_w;
+
+% Power function
+P = K*(M^a)*G*rho*(c^3)*(b_w^2);
+
+% Strouhal number
+S = (f * L * (1 - M*cos(theta))) / (M*c);
+
+% Spectral function
+F = (0.613 .* ((10*S).^4) .* (((10*S).^(1.5)) + 0.5).^(-4)) ...
+    + (0.613 .* ((2.19*S).^(4)) .* (((2.19*S)^1.5) + 0.5)^(-4));
+
+% Directivity funtion
+D = 4 * (cos(phi)^2) * (cos(theta / 2)^2);
+
+% 
+psquared = (rho*c*P*D*F) / (4*(pi^2)*(r^2)*(1-M*cos(theta))^4);
+
+%% Formulas (Flaps)
 
 figure();
 semilogx(f,psquared)
