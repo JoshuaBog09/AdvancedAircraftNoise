@@ -55,7 +55,7 @@ F = 0.0577 .* (S.^2) .* ((0.25*S.^2) + 1).^(-1.5);
 D = (3/2)*(sin(theta))^2;
 
 % 
-psquared = (rho*c*P*D*F) / (4*(pi^2)*(r^2)*(1-M*cos(theta))^4);
+psquared_lg = (rho*c*P*D*F) / (4*(pi^2)*(r^2)*(1-M*cos(theta))^4);
 
 %% Flaps formulas
 K = 2.787*10-4;
@@ -80,7 +80,7 @@ F(S > 20) = 216.49 * S(S > 20).^(-3);
 % Directivity funtion
 D = 3*(sin(delta_f)*cos(theta)+cos(delta_f)*sin(theta)*cos(phi))^2;
 
-psquared = (rho*c*P*D*F) / (4*(pi^2)*(r^2)*(1-M*cos(theta))^4);
+psquared_fl = (rho*c*P*D*F) / (4*(pi^2)*(r^2)*(1-M*cos(theta))^4);
 
 %% Formulas (wing)
 K = 4.464*10^(-5);
@@ -101,7 +101,7 @@ F = 0.613 .* ((10*S).^4) .* (((10*S).^(1.5)) + 0.5).^(-4);
 D = 4 * (cos(phi)^2) * (cos(theta / 2)^2);
 
 % 
-psquared = (rho*c*P*D*F) / (4*(pi^2)*(r^2)*(1-M*cos(theta))^4);
+psquared_wg = (rho*c*P*D*F) / (4*(pi^2)*(r^2)*(1-M*cos(theta))^4);
 
 %% Formulas (slats)
 
@@ -118,27 +118,36 @@ S = (f * L * (1 - M*cos(theta))) / (M*c);
 
 % Spectral function
 F = (0.613 .* ((10*S).^4) .* (((10*S).^(1.5)) + 0.5).^(-4)) ...
-    + (0.613 .* ((2.19*S).^(4)) .* (((2.19*S)^1.5) + 0.5)^(-4));
+    + (0.613 .* ((2.19*S).^(4)) .* (((2.19*S).^1.5) + 0.5).^(-4));
 
 % Directivity funtion
 D = 4 * (cos(phi)^2) * (cos(theta / 2)^2);
 
 % 
-psquared = (rho*c*P*D*F) / (4*(pi^2)*(r^2)*(1-M*cos(theta))^4);
+psquared_sl = (rho*c*P*D*F) / (4*(pi^2)*(r^2)*(1-M*cos(theta))^4);
 
 %% Plots
 
-figure();
-semilogx(f,psquared)
+% figure();
+% semilogx(f,psquared)
 
 figure();
 semilogx(data(1,:), data(2,:))
 
-res = 10*log10((psquared ./ f) / (2*10^(-5))^2);
+res_wg = 10*log10((psquared_wg ./ f) / (2*10^(-5))^2);
+res_fl = 10*log10((psquared_fl ./ f) / (2*10^(-5))^2);
+res_sl = 10*log10((psquared_sl ./ f) / (2*10^(-5))^2);
+res_lg = 10*log10((psquared_lg ./ f) / (2*10^(-5))^2);
+
 % res = 10*log10(psquared ./ f) - 10*log10(0.23*f);
 
 % res = 10*log10(psquared ./ f);
 
 figure();
-semilogx(f, res)
+semilogx(f, res_wg)
+hold on
+semilogx(f, res_fl)
+semilogx(f, res_sl)
+semilogx(f, res_lg)
+legend("Wing", "Flaps", "Slats", "Landing gear")
 
