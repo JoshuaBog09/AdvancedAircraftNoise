@@ -25,3 +25,4 @@ figure();
 imagesc(1/6000:1/6000:1,1:128,y1); 
 colormap jet; 
 axis xy;
+colorbar

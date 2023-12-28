@@ -144,6 +144,8 @@ res_fl = res_fl + 10*log10(0.23*f);
 res_sl = res_sl + 10*log10(0.23*f);
 res_lg = res_lg + 10*log10(0.23*f);
 
+res_tot = 10 * log10(10.^(res_wg/10) + 10.^(res_fl/10) + 10.^(res_sl/10) + 10.^(res_lg/10));
+
 % Pa^2 (output of previous parts of the code)
 % P
 
@@ -157,14 +159,15 @@ hold on
 semilogx(f, res_fl)
 semilogx(f, res_sl)
 semilogx(f, res_lg)
-legend("Wing", "Flaps", "Slats", "Landing gear")
+semilogx(f, res_tot, LineStyle="--")
+legend("Wing", "Flaps", "Slats", "Landing gear", "total")
 
 %% Next set of ex
 
 OSPL = 10 * log10((psquared_wg + psquared_fl + psquared_sl + psquared_lg) / (2*10^(-5))^2);
 
 figure();
-semilogx(f,OSPL)
+semilogx(f,res_tot)
 hold on
 semilogx(data(1,:), data(2,:))
 legend("Modeled", "Measured")
