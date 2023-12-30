@@ -139,12 +139,16 @@ res_fl = 10*log10((psquared_fl ./ f) / (2*10^(-5))^2);
 res_sl = 10*log10((psquared_sl ./ f) / (2*10^(-5))^2);
 res_lg = 10*log10((psquared_lg ./ f) / (2*10^(-5))^2);
 
-res_wg = res_wg + 10*log10(0.23*f);
-res_fl = res_fl + 10*log10(0.23*f);
-res_sl = res_sl + 10*log10(0.23*f);
-res_lg = res_lg + 10*log10(0.23*f);
+res_wg = res_wg - 10*log10(0.23*f);
+res_fl = res_fl - 10*log10(0.23*f);
+res_sl = res_sl - 10*log10(0.23*f);
+res_lg = res_lg - 10*log10(0.23*f);
 
-res_tot = 10 * log10(10.^(res_wg/10) + 10.^(res_fl/10) + 10.^(res_sl/10) + 10.^(res_lg/10));
+semi = 10 * log10((psquared_wg + psquared_fl + psquared_sl + psquared_lg ) / (2*10^(-5))^2 );
+res_tot = semi - 10*log10(0.23*f);
+
+
+% res_tot = 10 * log10(10.^(res_wg/10) + 10.^(res_fl/10) + 10.^(res_sl/10) + 10.^(res_lg/10));
 
 % Pa^2 (output of previous parts of the code)
 % P
