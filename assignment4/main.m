@@ -26,3 +26,11 @@ imagesc(1/6000:1/6000:1,1:128,y1);
 colormap jet; 
 axis xy;
 colorbar
+
+%% Part for Q1 and Q2
+
+angle = 90:-1:0;
+f = ((2/1500)*(sin(angle*pi/180)+1)).^(-1);
+
+figure();
+plot(form, angle)
