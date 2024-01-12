@@ -35,7 +35,7 @@ phi = 0;
 r = 1;
 delta_f = pi/6;
 
-%% Formulas
+%% Formulas lg
 
 K = 3.414*10^(-4);
 a = 6;
@@ -165,6 +165,8 @@ semilogx(f, res_sl)
 semilogx(f, res_lg)
 semilogx(f, res_tot, LineStyle="--")
 legend("Wing", "Flaps", "Slats", "Landing gear", "total")
+xlabel('Frequency [Hz]')
+ylabel('PSD [dB/Hz]')
 
 %% Comparison measured and modelled
 
@@ -173,6 +175,8 @@ semilogx(f,res_tot)
 hold on
 semilogx(data(1,:), data(2,:))
 legend("Modeled", "Measured")
+xlabel('Frequency [Hz]')
+ylabel('PSD [dB/Hz]')
 
 %% OSPL for both measure and modeled sound data
 
