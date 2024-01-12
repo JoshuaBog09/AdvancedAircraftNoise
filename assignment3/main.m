@@ -166,12 +166,15 @@ semilogx(f, res_lg)
 semilogx(f, res_tot, LineStyle="--")
 legend("Wing", "Flaps", "Slats", "Landing gear", "total")
 
-%% Next set of ex
-
-OSPL = 10 * log10((psquared_wg + psquared_fl + psquared_sl + psquared_lg) / (2*10^(-5))^2);
+%% Comparison measured and modelled
 
 figure();
 semilogx(f,res_tot)
 hold on
 semilogx(data(1,:), data(2,:))
 legend("Modeled", "Measured")
+
+%% OSPL for both measure and modeled sound data
+
+OSPL_mdl = 10*log10(sum(10.^(res_tot/10)));
+OSPL_msr = 10*log10(sum(10.^(data(2,:)/10)));
