@@ -51,6 +51,10 @@ S = (f * L * (1 - M*cos(theta))) / (M*c);
 % Spectral function
 F = 0.0577 .* (S.^2) .* ((0.25*S.^2) + 1).^(-1.5);
 
+%figure();
+%loglog(S,F)
+%hold on
+
 % Directivity funtion
 D = (3/2)*(sin(theta))^2;
 
@@ -77,6 +81,8 @@ F(S < 2) = 0.0480 * S(S < 2);
 F((2 <= S) & (S <= 20)) = 0.1406 * S((2 <= S) & (S <= 20)).^(-0.55);
 F(S > 20) = 216.49 * S(S > 20).^(-3);
 
+%loglog(S,F)
+
 % Directivity funtion
 D = 3*(sin(delta_f)*cos(theta)+cos(delta_f)*sin(theta)*cos(phi))^2;
 
@@ -96,6 +102,8 @@ S = (f * L * (1 - M*cos(theta))) / (M*c);
 
 % Spectral function
 F = 0.613 * ((10*S).^4) .* (((10*S).^(1.5)) + 0.5).^(-4);
+
+%loglog(S,F)
 
 % Directivity funtion
 D = 4 * (cos(phi)^2) * (cos(theta / 2)^2);
@@ -120,6 +128,8 @@ S = (f * L * (1 - M*cos(theta))) / (M*c);
 F = (0.613 * ((10*S).^4) .* (((10*S).^(1.5)) + 0.5).^(-4)) ...
     + (0.613 * ((2.19*S).^(4)) .* (((2.19*S).^1.5) + 0.5).^(-4));
 
+% loglog(S,F)
+
 % Directivity funtion
 D = 4 * (cos(phi)^2) * (cos(theta / 2)^2);
 
@@ -127,9 +137,6 @@ D = 4 * (cos(phi)^2) * (cos(theta / 2)^2);
 psquared_sl = (rho*c*P*D*F) / (4*(pi^2)*(r^2)*(1-M*cos(theta))^4);
 
 %% Plots
-
-% figure();
-% semilogx(f,psquared)
 
 figure();
 semilogx(data(1,:), data(2,:))
@@ -146,16 +153,6 @@ res_lg = res_lg - 10*log10(0.23*f);
 
 semi = 10 * log10((psquared_wg + psquared_fl + psquared_sl + psquared_lg ) / (2*10^(-5))^2 );
 res_tot = semi - 10*log10(0.23*f);
-
-
-% res_tot = 10 * log10(10.^(res_wg/10) + 10.^(res_fl/10) + 10.^(res_sl/10) + 10.^(res_lg/10));
-
-% Pa^2 (output of previous parts of the code)
-% P
-
-% res = 10*log10(psquared ./ f) - 10*log10(0.23*f);
-
-% res = 10*log10(psquared ./ f);
 
 figure();
 semilogx(f, res_wg)
