@@ -31,7 +31,7 @@ colorbar
 %% Part for Q1 and Q2 (Theoretical questions)
 
 angle = 90:-1:0;
-f = ((2/1500)*(sin(angle*pi/180)+1)).^(-1);
+f = ((d/c)*(sin(angle*pi/180)+1)).^(-1);
 
 figure();
 plot(f, angle)
@@ -44,31 +44,44 @@ plot(f, angle)
 % Step 4: repeat for all stearing angles
 % Step 5: Convert to dB presentation
 
-final = zeros(201,fs);
+% Microphone 113 seems to be defect
+
+steering_angles = -75:0.5:75;
+fk = 1:fs;  % Frequencies
+
+final = zeros(size(steering_angles,2),fs);
 row = 0;
 
-for steering_angle = -50:0.5:50
+for steering_angle = steering_angles
     
-    inter = zeros(1, fs);
+    inter = zeros(1, fs); % Storage of results for a single stearing angle but all frequencies
     row = row + 1;
+    
     for n = 1:n_mic
-        d_mic = y1(n,:);
         
-        fk = 1:fs;
-        fc_mic = fft(d_mic);
+        d_mic = y1(n,:);     % Microphone data of microphone n
+        
+        fc_mic = fft(d_mic); % Fourier coefficient a signular microphone n
         
         %plot(fk,fc_mic) % View the fourier coef over frequency
         
-        tau_n = (d/c) * n * sin(steering_angle*pi/180);
-        inter = inter + fc_mic.*exp(2*pi*1i*fk*tau_n);
+        tau_n = (d/c) * n * sin(deg2rad(steering_angle));   % Phase shift parameter
+        inter = inter + fc_mic.*exp(2*pi*1i*fk*tau_n);      % Sum over all microphones
     end
     
-    inter = 10*log10((abs(inter).^2)/(p_ref^2));
-    final(row,:) = inter;
+    inter = 10*log10((abs(inter).^2)/(p_ref^2));    % Convert to dB
+    final(row,:) = inter;                           % append to solution...
+    % array based on steering angle in evaluation 
+    % (note all frequencies are added for the sum of all microphones)
 end
 
 figure();
-imagesc(-50:0.5:50, 2:6000, final(:,2:end).'); 
+imagesc(steering_angles, 20:fs/2, final(:,20:fs/2).'); 
 colormap turbo; 
 axis xy;
-colorbar
+colorbar;
+xlabel('Steering angle [deg]');
+ylabel('frequency [Hz]');
+cb = colorbar(); 
+ylabel(cb,'Power (dB)','Rotation',270)
+%clim(); % <--- set bounds on colorbar
