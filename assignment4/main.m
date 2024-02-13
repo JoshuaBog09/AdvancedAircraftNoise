@@ -11,7 +11,7 @@ c = 1500;       % Speed of sound in water [m/s]
 fs = 6000;      % Smample frequency [Hz]
 d = 2;          % Distance between microphones [m]
 n_mic = 128;    % Number of microphones [-]
-p_ref = 1e-6;   % Refrence ressure for water [Pa]
+p_ref = 10^(-6);   % Refrence ressure for water [Pa]
 
 % Visualise the data
 
@@ -34,7 +34,7 @@ angle = 90:-1:0;
 f = ((d/c)*(sin(angle*pi/180)+1)).^(-1);
 
 figure();
-plot(f, angle)
+plot(angle, f)
 
 %% Part 3 Beamforming 
 
@@ -61,7 +61,7 @@ for steering_angle = steering_angles
         
         d_mic = y1(n,:);     % Microphone data of microphone n
         
-        fc_mic = fft(d_mic); % Fourier coefficient a signular microphone n
+        fc_mic = fft(d_mic); % Fourier coefficient a signular microphone n (One sided PSD)
         
         %plot(fk,fc_mic) % View the fourier coef over frequency
         
@@ -94,4 +94,27 @@ angles = -90:1:90;
 K = ((2 * pi) / lambda) * sin(deg2rad(angles));
 D = sin(n_mic * K * d / 2) ./ (n_mic * sin(K * d / 2));
 
-plot(angles, D)
+plot(angles, abs(D))
+
+%% Steering angle
+
+f = 20:1:3000;
+steering_angles = 50;
+
+Thetabs = (c) ./ (cos(deg2rad(steering_angles)) * n_mic * d * f);
+
+figure();
+plot(rad2deg(Thetabs), f)
+hold on
+plot(-rad2deg(Thetabs), f)
+
+% figure();
+% imagesc(steering_angles, f, Thetabs);
+% colormap turbo; 
+% axis xy;
+% colorbar;
+% xlabel('Steering angle [deg]');
+% ylabel('frequency [Hz]');
+% cb = colorbar(); 
+% ylabel(cb,'Power (dB)','Rotation',270)
+
