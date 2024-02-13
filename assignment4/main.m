@@ -85,3 +85,13 @@ ylabel('frequency [Hz]');
 cb = colorbar(); 
 ylabel(cb,'Power (dB)','Rotation',270)
 %clim(); % <--- set bounds on colorbar
+
+%% Lobe plots
+
+lambda = c / fs;
+angles = -90:1:90;
+
+K = ((2 * pi) / lambda) * sin(deg2rad(angles));
+D = sin(n_mic * K * d / 2) ./ (n_mic * sin(K * d / 2));
+
+plot(angles, D)
