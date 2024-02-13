@@ -6,6 +6,9 @@ clear;
 load('hydrophonedata_AE4463P.mat')
 
 %% Start Script 
+global c
+global d
+global n_mic
 
 c = 1500;       % Speed of sound in water [m/s]
 fs = 6000;      % Smample frequency [Hz]
@@ -99,22 +102,50 @@ plot(angles, abs(D))
 %% Steering angle
 
 f = 20:1:3000;
-steering_angles = 50;
+angle = 30;
 
-Thetabs = (c) ./ (cos(deg2rad(steering_angles)) * n_mic * d * f);
+Thetabs = (c) ./ (cos(deg2rad(angle)) * n_mic * d * f);
 
 figure();
-plot(rad2deg(Thetabs), f)
-hold on
-plot(-rad2deg(Thetabs), f)
+ax = imagesc(steering_angles, 20:fs/2, final(:,20:fs/2).');
+hold on;
+colormap turbo; 
+axis xy;
+colorbar;
+xlabel('Steering angle [deg]');
+ylabel('frequency [Hz]');
+cb = colorbar(); 
+ylabel(cb,'Power (dB)','Rotation',270)
 
-% figure();
-% imagesc(steering_angles, f, Thetabs);
-% colormap turbo; 
-% axis xy;
-% colorbar;
-% xlabel('Steering angle [deg]');
-% ylabel('frequency [Hz]');
-% cb = colorbar(); 
-% ylabel(cb,'Power (dB)','Rotation',270)
+plot(rad2deg(Thetabs) + angle, f, LineWidth=1,Color="k")
+plot(-rad2deg(Thetabs) + angle, f, LineWidth=1,Color="k")
 
+addBeamWidth(-64, f)
+
+addBeamWidth(-25, f)
+
+addBeamWidth(-4, f)
+
+% Above is due to anti aliassing filter
+% Peaks are real sound sources, they really exist
+% Curves are fales data (steering), they are not real sound sources
+% Below also not really good data to use (low freq)
+
+
+function addBeamWidth(steeringangle, f)
+    %{
+    Function to add the expected beam with to the data plot currently in
+    use. The analysed steering angle of the signal is provided as input
+    toghetter with the analysed frequencies. The result is then super
+    imposed onto the beamformed data figure.
+    %}
+    global c
+    global n_mic
+    global d
+    
+    BeamWidth = c ./ (cos(deg2rad(steeringangle)) * n_mic * d * f);
+    
+    plot(rad2deg(BeamWidth) + steeringangle, f, LineWidth=1, Color="k")
+    plot(-rad2deg(BeamWidth) + steeringangle, f, LineWidth=1, Color="k")
+
+end
