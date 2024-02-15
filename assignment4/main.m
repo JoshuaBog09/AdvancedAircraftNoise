@@ -133,11 +133,9 @@ addBeamWidth(-4, f)
 % Curves are fales data (steering), they are not real sound sources
 % Below also not really good data to use (low freq)
 
-%Grating Lobe Pattern [-62, -22, -4,30]
-steering_angles = [-22];
-steering_anglesM = [-62];
+% Grating Lobe Pattern [-62, -22, -4,30]
 
-plotGratinglobePattern(steering_angles, 3);
+plotGratinglobePattern([-22], 3, f);
 
 %plotGratinglobePatternM(steering_anglesM);
 
@@ -161,14 +159,12 @@ function addBeamWidth(steeringangle, f)
 
 end
 
-function plotGratinglobePattern(steering_angles, m)
-    f = 20:1:3000;
-    c = 1500;  % Speed of light in meters per second
-    lambda1 = c ./ f;
-    d = 2;
+function plotGratinglobePattern(steering_angles, m, f)
+    
+    global c
+    global d
 
-    figure(16);
-    hold on;
+    lambda1 = c ./ f;
 
     for angle = steering_angles
         grating_lobe_values = sin(deg2rad(angle)) + m*lambda1 / d; 
@@ -178,7 +174,6 @@ function plotGratinglobePattern(steering_angles, m)
         plot(grating_lobe_angles_deg, f, 'LineWidth', 1);
     end
 
-    hold off;
     xlabel('Gratinglobe Angle (degrees)');
     ylabel('Frequency (Hz)');
     title('Gratinglobe Pattern for Different Steering Angles');
@@ -186,34 +181,27 @@ function plotGratinglobePattern(steering_angles, m)
     grid on;
 end
 
-function plotGratinglobePatternM(steering_anglesM)
-    f = 20:1:3000;
-    c = 1500;  % Speed of light in meters per second
-    lambda1 = c ./ f;
-    d = 2;
-
-    figure(16);
-    hold on;
-
-    for angle = steering_anglesM
-        grating_lobe_values = sin(deg2rad(angle)) - 3*lambda1 / d; 
-        theta_grating_lobe = asin(grating_lobe_values);
-        grating_lobe_angles_deg = rad2deg(theta_grating_lobe);
-
-        plot(grating_lobe_angles_deg, f, 'LineWidth', 1);
-    end
-
-    hold off;
-    xlabel('Gratinglobe Angle (degrees)');
-    ylabel('Frequency (Hz)');
-    title('Gratinglobe Pattern for Different Steering Angles');
-    legend(cellstr(num2str(steering_anglesM')), 'Location', 'Best');
-    grid on;
-end
-
-
-
-
-
-
-
+% function plotGratinglobePatternM(steering_anglesM)
+%     f = 20:1:3000;
+%     c = 1500;  % Speed of light in meters per second
+%     lambda1 = c ./ f;
+%     d = 2;
+% 
+%     figure(16);
+%     hold on;
+% 
+%     for angle = steering_anglesM
+%         grating_lobe_values = sin(deg2rad(angle)) - 3*lambda1 / d; 
+%         theta_grating_lobe = asin(grating_lobe_values);
+%         grating_lobe_angles_deg = rad2deg(theta_grating_lobe);
+% 
+%         plot(grating_lobe_angles_deg, f, 'LineWidth', 1);
+%     end
+% 
+%     hold off;
+%     xlabel('Gratinglobe Angle (degrees)');
+%     ylabel('Frequency (Hz)');
+%     title('Gratinglobe Pattern for Different Steering Angles');
+%     legend(cellstr(num2str(steering_anglesM')), 'Location', 'Best');
+%     grid on;
+% end
