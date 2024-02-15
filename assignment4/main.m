@@ -126,21 +126,15 @@ addBeamWidth(-64, f)
 
 addBeamWidth(-25, f)
 
-addBeamWidth(-4, f)
-
 % Above is due to anti aliassing filter
 % Peaks are real sound sources, they really exist
 % Curves are fales data (steering), they are not real sound sources
 % Below also not really good data to use (low freq)
 
-% Grating Lobe Pattern [-62, -22, -4,30]
-
 plotGratinglobePattern([-25], 3, f);
 plotGratinglobePattern([-62], 1, f);
 plotGratinglobePattern([30], -1, f);
 
-
-%plotGratinglobePatternM(steering_anglesM);
 
 
 %%
