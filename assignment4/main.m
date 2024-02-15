@@ -135,7 +135,10 @@ addBeamWidth(-4, f)
 
 % Grating Lobe Pattern [-62, -22, -4,30]
 
-plotGratinglobePattern([-22], 3, f);
+plotGratinglobePattern([-25], 3, f);
+plotGratinglobePattern([-62], 1, f);
+plotGratinglobePattern([30], -1, f);
+
 
 %plotGratinglobePatternM(steering_anglesM);
 
@@ -171,7 +174,7 @@ function plotGratinglobePattern(steering_angles, m, f)
         theta_grating_lobe = asin(grating_lobe_values);
         grating_lobe_angles_deg = rad2deg(theta_grating_lobe);
 
-        plot(grating_lobe_angles_deg, f, 'LineWidth', 1);
+        plot(grating_lobe_angles_deg, f, 'LineWidth', 1, Color='k');
     end
 
     xlabel('Gratinglobe Angle (degrees)');
