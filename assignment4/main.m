@@ -39,6 +39,9 @@ f = ((d/c)*(sin(angle*pi/180)+1)).^(-1);
 
 figure();
 plot(angle, f)
+xlabel("Steering angle [deg]")
+ylabel("Frequency [Hz]")
+
 
 %% Part 3 Beamforming 
 
@@ -65,7 +68,8 @@ for steering_angle = steering_angles
         
         d_mic = y1(n,:);     % Microphone data of microphone n
         
-        fc_mic = fft(d_mic); % Fourier coefficient a signular microphone n (One sided PSD)
+        fc_mic = fft(d_mic); % Fourier coefficient a signular microphone n 
+        % (Still to be converted to One sided PSD)
         
         %plot(fk,fc_mic) % View the fourier coef over frequency
         
@@ -89,17 +93,6 @@ ylabel('frequency [Hz]');
 cb = colorbar(); 
 ylabel(cb,'Power (dB)','Rotation',270)
 %clim(); % <--- set bounds on colorbar
-
-%% Lobe plots
-
-lambda = c / fs;
-angles = -90:1:90;
-
-K = ((2 * pi) / lambda) * sin(deg2rad(angles));
-D = sin(n_mic * K * d / 2) ./ (n_mic * sin(K * d / 2));
-
-figure();
-plot(angles, abs(D))
 
 %% Steering angle
 
@@ -136,8 +129,7 @@ plotGratinglobePattern([-62], 1, f);
 plotGratinglobePattern([30], -1, f);
 
 
-
-%%
+%% Functions
 function addBeamWidth(steeringangle, f)
     %{
     Function to add the expected beam with to the data plot currently in
