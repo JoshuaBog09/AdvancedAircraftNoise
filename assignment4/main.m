@@ -2,6 +2,7 @@
 % By: Elisabeth and Joshua
 
 clear;
+%close all;
 
 load('hydrophonedata_AE4463P.mat')
 
@@ -18,7 +19,7 @@ p_ref = 10^(-6);   % Refrence ressure for water [Pa]
 
 % Visualise the data
 
-figure(5);
+figure();
 %[X,Y] = meshgrid(1:0.5:10,1:20);
 [X,Y] = meshgrid(1/fs:1/fs:1,1:128);
 surf(X,Y,y1,'EdgeColor' ,'none')
@@ -36,7 +37,7 @@ colorbar
 angle = 90:-1:0;
 f = ((d/c)*(sin(angle*pi/180)+1)).^(-1);
 
-figure(10);
+figure();
 plot(angle, f)
 
 %% Part 3 Beamforming 
@@ -57,7 +58,7 @@ row = 0;
 
 for steering_angle = steering_angles
     
-    inter = zeros(1, fs); % Storage of results for a single stearing angle but all frequencies
+    inter = zeros(1, fs); %Storage of results for a single stearing angle but all frequencies
     row = row + 1;
     
     for n = 1:n_mic
@@ -78,7 +79,7 @@ for steering_angle = steering_angles
     % (note all frequencies are added for the sum of all microphones)
 end
 
-figure(14);
+figure();
 imagesc(steering_angles, 20:fs/2, final(:,20:fs/2).'); 
 colormap turbo; 
 axis xy;
@@ -97,7 +98,7 @@ angles = -90:1:90;
 K = ((2 * pi) / lambda) * sin(deg2rad(angles));
 D = sin(n_mic * K * d / 2) ./ (n_mic * sin(K * d / 2));
 
-figure(15);
+figure();
 plot(angles, abs(D))
 
 %% Steering angle
@@ -106,9 +107,6 @@ f = 20:1:3000;
 angle = 30;
 
 Thetabs = (c) ./ (cos(deg2rad(angle)) * n_mic * d * f);
-
-sidelobe_angles = -58; % You can adjust this if you want a range of angles
-sidelobe_values = sind(sidelobe_angles) + lambda/d;
 
 figure(16);
 ax = imagesc(steering_angles, 20:fs/2, final(:,20:fs/2).');
@@ -130,29 +128,18 @@ addBeamWidth(-25, f)
 
 addBeamWidth(-4, f)
 
-plot(sidelobe_angles, sidelobe_values, 'r--', 'LineWidth', 1.5)
-
 % Above is due to anti aliassing filter
 % Peaks are real sound sources, they really exist
 % Curves are fales data (steering), they are not real sound sources
 % Below also not really good data to use (low freq)
 
-%%
-%sidelobe = sind(-58) + lambda/d;
+%% Grating Lobe Pattern [-62, -48, -39, -22, -4, 19, 30, 50]
+steering_angles = [-62, -22, -4, 30];
+steering_anglesM = [-62, -22, -4, 30];
 
-%Sidelobe calculation
-% sidelobe_angle = -58;
-% sidelobe_value = sind(sidelobe_angle) + lambda/d;
+plotGratinglobePattern(steering_angles);
 
-sidelobe_angles = -58:1:58;  % Adjust the range as needed
-sidelobe_values = sin(deg2rad(sidelobe_angles)) + lambda/d;
-
-figure(16);
-hold on;
-plot([sidelobe_angles, sidelobe_values], 'k--', 'LineWidth', 2)
-%hold off;
-
-
+plotGratinglobePatternM(steering_anglesM);
 
 
 %%
@@ -174,6 +161,55 @@ function addBeamWidth(steeringangle, f)
 
 end
 
+function plotGratinglobePattern(steering_angles)
+    f = 20:1:3000;
+    c = 1500;  % Speed of light in meters per second
+    lambda1 = c ./ f;
+    d = 2;
+
+    figure(16);
+    hold on;
+
+    for angle = steering_angles
+        grating_lobe_values = sin(deg2rad(angle)) + lambda1 / d; 
+        theta_grating_lobe = asin(grating_lobe_values);
+        grating_lobe_angles_deg = rad2deg(theta_grating_lobe);
+
+        plot(grating_lobe_angles_deg, f, 'LineWidth', 1);
+    end
+
+    hold off;
+    xlabel('Gratinglobe Angle (degrees)');
+    ylabel('Frequency (Hz)');
+    title('Gratinglobe Pattern for Different Steering Angles');
+    legend(cellstr(num2str(steering_angles')), 'Location', 'Best');
+    grid on;
+end
+
+function plotGratinglobePatternM(steering_anglesM)
+    f = 20:1:3000;
+    c = 1500;  % Speed of light in meters per second
+    lambda1 = c ./ f;
+    d = 2;
+
+    figure(16);
+    hold on;
+
+    for angle = steering_anglesM
+        grating_lobe_values = sin(deg2rad(angle)) + 2*lambda1 / d; 
+        theta_grating_lobe = asin(grating_lobe_values);
+        grating_lobe_angles_deg = rad2deg(theta_grating_lobe);
+
+        plot(grating_lobe_angles_deg, f, 'LineWidth', 1);
+    end
+
+    hold off;
+    xlabel('Gratinglobe Angle (degrees)');
+    ylabel('Frequency (Hz)');
+    title('Gratinglobe Pattern for Different Steering Angles');
+    legend(cellstr(num2str(steering_anglesM')), 'Location', 'Best');
+    grid on;
+end
 
 
 
