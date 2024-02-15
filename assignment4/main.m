@@ -2,7 +2,7 @@
 % By: Elisabeth and Joshua
 
 clear;
-%close all;
+close all;
 
 load('hydrophonedata_AE4463P.mat')
 
@@ -133,13 +133,13 @@ addBeamWidth(-4, f)
 % Curves are fales data (steering), they are not real sound sources
 % Below also not really good data to use (low freq)
 
-%% Grating Lobe Pattern [-62, -48, -39, -22, -4, 19, 30, 50]
-steering_angles = [-62, -22, -4, 30];
-steering_anglesM = [-62, -22, -4, 30];
+%Grating Lobe Pattern [-62, -22, -4,30]
+steering_angles = [-22];
+steering_anglesM = [-62];
 
-plotGratinglobePattern(steering_angles);
+plotGratinglobePattern(steering_angles, 3);
 
-plotGratinglobePatternM(steering_anglesM);
+%plotGratinglobePatternM(steering_anglesM);
 
 
 %%
@@ -161,7 +161,7 @@ function addBeamWidth(steeringangle, f)
 
 end
 
-function plotGratinglobePattern(steering_angles)
+function plotGratinglobePattern(steering_angles, m)
     f = 20:1:3000;
     c = 1500;  % Speed of light in meters per second
     lambda1 = c ./ f;
@@ -171,7 +171,7 @@ function plotGratinglobePattern(steering_angles)
     hold on;
 
     for angle = steering_angles
-        grating_lobe_values = sin(deg2rad(angle)) + lambda1 / d; 
+        grating_lobe_values = sin(deg2rad(angle)) + m*lambda1 / d; 
         theta_grating_lobe = asin(grating_lobe_values);
         grating_lobe_angles_deg = rad2deg(theta_grating_lobe);
 
@@ -196,7 +196,7 @@ function plotGratinglobePatternM(steering_anglesM)
     hold on;
 
     for angle = steering_anglesM
-        grating_lobe_values = sin(deg2rad(angle)) + 2*lambda1 / d; 
+        grating_lobe_values = sin(deg2rad(angle)) - 3*lambda1 / d; 
         theta_grating_lobe = asin(grating_lobe_values);
         grating_lobe_angles_deg = rad2deg(theta_grating_lobe);
 
