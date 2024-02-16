@@ -39,7 +39,6 @@ h = 64.87;      % [m]
 fs = 40000;     % [Hz]
 n_mic = 32;     % [-]
 c = 343;        % [m/s]
-p_ref = 2e-5;   % [Pa]
 
 x_mic = Array(:,2);
 y_mic = Array(:,3);
@@ -55,7 +54,7 @@ pos = [[0 0]-1 2 2];
 
 rectangle('Position',pos,'Curvature',[1 1]);
 
-resolution = 0.5;  % [m]
+resolution = 0.25;  % [m]
 
 X = -25:resolution:25;
 Y = -25:resolution:25;
@@ -63,21 +62,28 @@ Y = -25:resolution:25;
 X_size = size(X,2);
 Y_size = size(Y,2);
 
-J = zeros(X_size*Y_size, 2);
-id = 1;
-
-for X_loc = X
-    for Y_loc = Y
-        J(id,:) = [X_loc, Y_loc];
-        id = id + 1; 
-    end
-end
-
 scanning_plane = zeros(X_size, Y_size);
 
-%% BeamForming
+%% fft
 
-microphone = 1;
+% T = 0.05;
+% N = length(p(1,:));
+% delta_t = T / N;
+% fs = 1 / delta_t;
+% delta_f = 1 / T;
+% 
+% % delta_t = 1 / fs;
+% % delta_f = 1 / 0.05;
+% % t = 0:delta_t:0.05;     % 50 ms
+% % N = length(t);
+% 
+% % fourier_coef = fft(p(1,:), N);
+% 
+% [S, F, T, P] = spectrogram(p(1,:), N, 0, N, fs, 'yaxis');
+
+%% 
+
+microphone = 10;
 
 T = 0.05;
 N = length(p(microphone,:));
@@ -85,50 +91,48 @@ delta_t = T / N;
 fs = 1 / delta_t;
 delta_f = 1 / T;
 
-% [S,F,T,P] = spectrogram(p(microphone,:), N, 0, N, fs, 'yaxis');
+[S,F,T,P] = spectrogram(p(microphone,:), N, 0, N, fs, 'yaxis');
 
-row = 0;
-final = zeros(length(J),1000);
 
-for j = 1:length(J)
+%exp(-2*pi*i*f_k*(r))
 
-    disp(j);
-    
-    inter = zeros(1, 1000); %Storage of results for a single stearing angle but all frequencies
-    row = row + 1;
-    
-    for microphone = 1:n_mic
+
+r = zeros(X_size, Y_size);
+g = zeros(X_size, Y_size, length(F));
+
+for x_id = 1:1:X_size
+    for y_id = 1:1:Y_size
+
+        r = sqrt((x_mic(microphone) - X(x_id))^2 + (y_mic(microphone) - Y(y_id))^2 + h^2);
         
-        d_mic = p(microphone,:);     % Microphone data of microphone n
+        for sub_frequency = 1:1:length(F)
+            
+            g(x_id,y_id,sub_frequency) = exp(-2*pi*1i*F(sub_frequency)*(r/c)) / r;
         
-        [S,F,T,P] = spectrogram(d_mic, N, 0, N, fs, 'yaxis');
-        
-        r = sqrt((x_mic(microphone) - J(j,1))^2 + (y_mic(microphone) - J(j,2))^2 + h^2);
-        
-        inter = inter + S.' .* exp(-2*pi*1i*F.'*(r/c)) / r;
-    end
-    
-    inter = 10*log10((abs(inter).^2)/(p_ref^2));    % Convert to dB
-    
-    final(row,:) = inter;                           % append to solution...
-end
-
-%% Plot results
-
-final_cohorent = zeros(length(J),1);
-
-for j = 1:length(J)
-    final_cohorent(j) = sum(final(j,:))/length(F);
-end
-
-% reconstruct grid
-
-Beamformed_grid = zeros(X_size, Y_size);
-
-for x_id = 1:X_size
-    for y_id = 1:Y_size
-        Beamformed_grid(x_id, y_id) = final_cohorent(x_id*y_id);
+        end
     end
 end
 
-imagesc(X, Y, Beamformed_grid)
+%% Next
+
+B = zeros(X_size, Y_size, length(F));
+
+for sub_frequency = 1:1:length(F)
+
+    B(:,:,sub_frequency) = ( ctranspose(g(:,:,sub_frequency)) * ( S(sub_frequency) * ctranspose(S(sub_frequency)) ) * g(:,:,sub_frequency) ) / abs(g(:,:,sub_frequency))^2;
+
+end
+
+B_incor = zeros(X_size, Y_size);
+
+for sub_frequency = 1:1:length(F)
+
+    B_incor(:,:) = B_incor(:,:) + B(:,:,sub_frequency);
+
+end
+
+B_incor = B_incor / length(F);
+
+%% 
+
+imagesc(X, Y, abs(B_incor))
