@@ -1,6 +1,7 @@
 % Assignment 5: Advanced Aircraft Noise
 
 clear;
+clc;
 
 %% Import data from text file
 % Script for importing data from the following text file:
@@ -64,23 +65,6 @@ Y_size = size(Y,2);
 
 scanning_plane = zeros(X_size, Y_size);
 
-%% fft
-
-% T = 0.05;
-% N = length(p(1,:));
-% delta_t = T / N;
-% fs = 1 / delta_t;
-% delta_f = 1 / T;
-% 
-% % delta_t = 1 / fs;
-% % delta_f = 1 / 0.05;
-% % t = 0:delta_t:0.05;     % 50 ms
-% % N = length(t);
-% 
-% % fourier_coef = fft(p(1,:), N);
-% 
-% [S, F, T, P] = spectrogram(p(1,:), N, 0, N, fs, 'yaxis');
-
 %% 
 
 microphone = 1;
@@ -91,48 +75,33 @@ delta_t = T / N;
 fs = 1 / delta_t;
 delta_f = 1 / T;
 
-[S,F,T,P] = spectrogram(p(microphone,:), N, 0, N, fs, 'yaxis');
+fcf = [];
 
+for microphone = 1:n_mic
+    [S,F,T,P] = spectrogram(p(microphone,:), N, 0, N, fs, 'yaxis');
+    fcf = [fcf; S.'];
+end
+% For every grid point, for every frequency
 
-%exp(-2*pi*i*f_k*(r))
+gp_x = 1;
+gp_y = 1;
+k    = 10;
 
-
-r = zeros(X_size, Y_size);
-g = zeros(X_size, Y_size, length(F));
-
-for x_id = 1:1:X_size
-    for y_id = 1:1:Y_size
-
-        r = sqrt((x_mic(microphone) - X(x_id))^2 + (y_mic(microphone) - Y(y_id))^2 + h^2);
+for x_plane = 1:X_size
+    for y_plane = 1:Y_size
+        for k = length(F)
         
-        for sub_frequency = 1:1:length(F)
+            r = sqrt((x_mic - X(gp_x)).^2 + (y_mic - Y(gp_y)).^2 + h^2);
+            g = exp(-2*pi*1i*F(k)*(r/c)) ./ r;
+            g_ct = ctranspose(g);
             
-            g(x_id,y_id,sub_frequency) = exp(-2*pi*1i*F(sub_frequency)*(r/c)) / r;
-        
+            x_coef = fcf(:,k);
+            x_coef_ct = ctranspose(x_coef);
+            
+            inter = inter + g_ct*(x_coef*x_coef_ct)*g / abs(g.'*g);
         end
+        
+        inter = inter / length(F);
+        scanning_plane(x_plane,y_plane) = inter;
     end
 end
-
-%% Next
-
-B = zeros(X_size, Y_size, length(F));
-
-for sub_frequency = 1:1:length(F)
-
-    B(:,:,sub_frequency) = ( ctranspose(g(:,:,sub_frequency)) * ( S(sub_frequency) * ctranspose(S(sub_frequency)) ) * g(:,:,sub_frequency) ) / abs(g(:,:,sub_frequency))^2;
-
-end
-
-B_incor = zeros(X_size, Y_size);
-
-for sub_frequency = 1:1:length(F)
-
-    B_incor(:,:) = B_incor(:,:) + B(:,:,sub_frequency);
-
-end
-
-B_incor = B_incor / length(F);
-
-%% 
-
-imagesc(X, Y, abs(B_incor))
