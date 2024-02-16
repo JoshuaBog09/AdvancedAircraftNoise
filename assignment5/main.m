@@ -55,3 +55,11 @@ pos = [c-r 2*r 2*r];
 
 rectangle('Position',pos,'Curvature',[1 1]);
 
+%%
+deltat = 1/fs;
+t = 0:deltat:0.05;
+N = length(t);
+X = fft(p(1,:), N);
+
+
+
