@@ -55,7 +55,7 @@ pos = [[0 0]-1 2 2];
 
 rectangle('Position',pos,'Curvature',[1 1]);
 
-resolution = 0.25;  % [m]
+resolution = 1;  % [m]
 
 X = -25:resolution:25;
 Y = -25:resolution:25;
@@ -83,15 +83,20 @@ for microphone = 1:n_mic
 end
 % For every grid point, for every frequency
 
-gp_x = 1;
-gp_y = 1;
-k    = 10;
+% gp_x = 1;
+% gp_y = 1;
+% k    = 10;
 
 for x_plane = 1:X_size
     for y_plane = 1:Y_size
-        for k = length(F)
         
-            r = sqrt((x_mic - X(gp_x)).^2 + (y_mic - Y(gp_y)).^2 + h^2);
+        disp([x_plane, y_plane]);
+
+        inter = 0;
+        
+        for k = 1:length(F)
+        
+            r = sqrt((x_mic - X(x_plane)).^2 + (y_mic - Y(y_plane)).^2 + h^2);
             g = exp(-2*pi*1i*F(k)*(r/c)) ./ r;
             g_ct = ctranspose(g);
             
@@ -99,9 +104,14 @@ for x_plane = 1:X_size
             x_coef_ct = ctranspose(x_coef);
             
             inter = inter + g_ct*(x_coef*x_coef_ct)*g / abs(g.'*g);
+        
         end
         
         inter = inter / length(F);
-        scanning_plane(x_plane,y_plane) = inter;
+        
+        scanning_plane(x_plane, y_plane) = inter;
     end
 end
+
+figure();
+imagesc(X, Y, abs(scanning_plane))
