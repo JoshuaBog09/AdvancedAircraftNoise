@@ -55,7 +55,7 @@ pos = [[0 0]-1 2 2];
 
 rectangle('Position',pos,'Curvature',[1 1]);
 
-resolution = 1;  % [m]
+resolution = 0.5;  % [m]
 
 X = -25:resolution:25;
 Y = -25:resolution:25;
@@ -94,7 +94,8 @@ for x_plane = 1:X_size
 
         inter = 0;
         
-        for k = 1:length(F)
+        %for k = 76:226 % <--- activates low freq (landing gear)
+        for k = 226:476 % <--- activates high freq (Engine)
         
             r = sqrt((x_mic - X(x_plane)).^2 + (y_mic - Y(y_plane)).^2 + h^2);
             g = exp(-2*pi*1i*F(k)*(r/c)) ./ r;
@@ -103,11 +104,14 @@ for x_plane = 1:X_size
             x_coef = fcf(:,k);
             x_coef_ct = ctranspose(x_coef);
             
-            inter = inter + g_ct*(x_coef*x_coef_ct)*g / abs(g.'*g);
-        
+            inter = inter + g_ct*(x_coef*x_coef_ct)*g / (abs(g.')*abs(g));
+            %inter = inter + g_ct*(x_coef*x_coef_ct)*g;
+            %inter = inter + normalize(g_ct*(x_coef*x_coef_ct)*g) ;
+
         end
         
-        inter = inter / length(F);
+        %inter = inter / (150);
+        inter = inter / (250);
         
         scanning_plane(x_plane, y_plane) = inter;
     end
