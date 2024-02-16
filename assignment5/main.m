@@ -38,6 +38,7 @@ load('Array\aircraft_noise_data_overhead_2020.mat');
 h = 64.87;      % [m]
 fs = 40000;     % [Hz]
 n_mic = 32;     % [-]
+c = 343;        % [m/s]
 
 x_mic = Array(:,2);
 y_mic = Array(:,3);
@@ -49,9 +50,16 @@ plot(x_mic, y_mic, "o");
 hold on
 axis equal
 % add circle https://stackoverflow.com/a/29194105
-r = 1;
-c = [0 0];
-pos = [c-r 2*r 2*r];
+pos = [[0 0]-1 2 2];
 
 rectangle('Position',pos,'Curvature',[1 1]);
 
+resolution = 0.25;  % [m]
+
+X = -25:resolution:25;
+Y = -25:resolution:25;
+
+X_size = size(X,2);
+Y_size = size(Y,2);
+
+scanning_plane = zeros(X_size, Y_size);
