@@ -44,5 +44,14 @@ y_mic = Array(:,3);
 
 %% Main code
 
-plot(x_mic, y_mic, "o")
+figure();
+plot(x_mic, y_mic, "o");
+hold on
+axis equal
+% add circle https://stackoverflow.com/a/29194105
+r = 1;
+c = [0 0];
+pos = [c-r 2*r 2*r];
+
+rectangle('Position',pos,'Curvature',[1 1]);
 
