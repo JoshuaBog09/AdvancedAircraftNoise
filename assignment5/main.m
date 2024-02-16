@@ -65,7 +65,22 @@ Y_size = size(Y,2);
 scanning_plane = zeros(X_size, Y_size);
 
 %% fft
-deltat = 1/fs;
-t = 0:deltat:0.05;
-N = length(t);
-X = fft(p(1,:), N);
+
+T = 0.05;
+N = length(p(1,:));
+delta_t = T / N;
+fs = 1 / delta_t;
+delta_f = 1 / T;
+
+% delta_t = 1 / fs;
+% delta_f = 1 / 0.05;
+% t = 0:delta_t:0.05;     % 50 ms
+% N = length(t);
+
+% fourier_coef = fft(p(1,:), N);
+
+[S, F, T, P] = spectrogram(p(1,:), N, 0, N, fs, 'yaxis');
+
+
+
+
