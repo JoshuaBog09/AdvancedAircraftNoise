@@ -55,15 +55,15 @@ pos = [[0 0]-1 2 2];
 
 rectangle('Position',pos,'Curvature',[1 1]);
 
-resolution = 0.5;  % [m]
+resolution = 0.25;  % [m]
 
 X = -25:resolution:25;
-Y = -25:resolution:25;
+Y = -30:resolution:30;
 
 X_size = size(X,2);
 Y_size = size(Y,2);
 
-scanning_plane = zeros(X_size, Y_size);
+scanning_plane = zeros(Y_size, X_size);
 
 %% 
 
@@ -94,8 +94,8 @@ for x_plane = 1:X_size
 
         inter = 0;
         
-        %for k = 76:226 % <--- activates low freq (landing gear)
-        for k = 226:476 % <--- activates high freq (Engine)
+        for k = 76:226 % <--- activates low freq (landing gear)
+        %for k = 226:476 % <--- activates high freq (Engine)
         
             r = sqrt((x_mic - X(x_plane)).^2 + (y_mic - Y(y_plane)).^2 + h^2);
             g = exp(-2*pi*1i*F(k)*(r/c)) ./ r;
@@ -104,18 +104,23 @@ for x_plane = 1:X_size
             x_coef = fcf(:,k);
             x_coef_ct = ctranspose(x_coef);
             
-            inter = inter + g_ct*(x_coef*x_coef_ct)*g / (abs(g.')*abs(g));
+            %inter = inter + g_ct*(x_coef*x_coef_ct)*g / (abs(g.')*abs(g));
             %inter = inter + g_ct*(x_coef*x_coef_ct)*g;
             %inter = inter + normalize(g_ct*(x_coef*x_coef_ct)*g) ;
+            inter = inter + g_ct*(x_coef*x_coef_ct)*g / norm(g);
 
         end
         
-        %inter = inter / (150);
-        inter = inter / (250);
+        inter = inter / (150);
+        %inter = inter / (250);
         
-        scanning_plane(x_plane, y_plane) = inter;
+        scanning_plane(y_plane, x_plane) = inter;
     end
 end
 
+%%
 figure();
 imagesc(X, Y, abs(scanning_plane))
+daspect([1 1 1])
+xlabel("x position [m]")
+ylabel("y position [m]")
