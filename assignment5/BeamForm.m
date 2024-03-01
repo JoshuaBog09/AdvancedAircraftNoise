@@ -48,12 +48,13 @@ y_mic = Array(:,3);
 
 figure();
 plot(x_mic, y_mic, "o");
+xlabel("x-position [m]");
+ylabel("y-position [m]");
 hold on
 axis equal
-% add circle https://stackoverflow.com/a/29194105
-pos = [[0 0]-1 2 2];
 
-rectangle('Position',pos,'Curvature',[1 1]);
+% add circle https://stackoverflow.com/a/29194105
+rectangle('Position',[[0 0]-1 2 2],'Curvature',[1 1],'LineStyle','--');
 
 resolution = 0.25;  % [m]
 
@@ -94,8 +95,10 @@ for x_plane = 1:X_size
 
         inter = 0;
         
-        for k = 76:226 % <--- activates low freq (landing gear)
-        %for k = 226:476 % <--- activates high freq (Engine)
+        % Select band to anlyse and make sure to also change the N factor
+        % for averaging
+        %for k = 76:226 % <--- activates low freq (landing gear)
+        for k = 226:476 % <--- activates high freq (Engine)
         
             r = sqrt((x_mic - X(x_plane)).^2 + (y_mic - Y(y_plane)).^2 + h^2);
             g = exp(-2*pi*1i*F(k)*(r/c)) ./ r;
@@ -111,8 +114,8 @@ for x_plane = 1:X_size
 
         end
         
-        inter = inter / (150);
-        %inter = inter / (250);
+        %inter = inter / (150);
+        inter = inter / (250);
         
         scanning_plane(y_plane, x_plane) = inter;
     end
@@ -124,3 +127,8 @@ imagesc(X, Y, abs(scanning_plane))
 daspect([1 1 1])
 xlabel("x position [m]")
 ylabel("y position [m]")
+
+% Enable to save figures to appropriate directory
+% ax = gca;
+% % Requires R2020a or later
+% exportgraphics(ax,'Figures\HighFreq_compact.png','Resolution',300) 
