@@ -92,7 +92,7 @@ final = zeros(length(J),1000);
 
 for j = 1:length(J)
 
-    disp(j);
+    % disp(j);
     
     inter = zeros(1, 1000); %Storage of results for a single stearing angle but all frequencies
     row = row + 1;
@@ -116,7 +116,7 @@ end
 %% Plot results
 
 final_cohorent = zeros(length(J),1);
-
+% 
 for j = 1:length(J)
     final_cohorent(j) = sum(final(j,:))/length(F);
 end

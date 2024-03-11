@@ -95,7 +95,7 @@ for x_plane = 1:X_size
         inter = 0;
         
         %for k = 76:226 % <--- activates low freq (landing gear)
-        for k = 226:476 % <--- activates high freq (Engine)
+        for k = 226:476 % <--- activates high freq (Engine)]
         
             r = sqrt((x_mic - X(x_plane)).^2 + (y_mic - Y(y_plane)).^2 + h^2);
             g = exp(-2*pi*1i*F(k)*(r/c)) ./ r;
@@ -104,7 +104,8 @@ for x_plane = 1:X_size
             x_coef = fcf(:,k);
             x_coef_ct = ctranspose(x_coef);
             
-            inter = inter + g_ct*(x_coef*x_coef_ct)*g / (abs(g.')*abs(g));
+            %inter = inter + g_ct*(x_coef*x_coef_ct)*g / (abs(g.')*abs(g));
+            inter = inter + g_ct*(x_coef*x_coef_ct)*g / norm(g);
             %inter = inter + g_ct*(x_coef*x_coef_ct)*g;
             %inter = inter + normalize(g_ct*(x_coef*x_coef_ct)*g) ;
 
