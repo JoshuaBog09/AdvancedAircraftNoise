@@ -48,22 +48,23 @@ y_mic = Array(:,3);
 
 figure();
 plot(x_mic, y_mic, "o");
+xlabel("x-position [m]");
+ylabel("y-position [m]");
 hold on
 axis equal
+
 % add circle https://stackoverflow.com/a/29194105
-pos = [[0 0]-1 2 2];
+rectangle('Position',[[0 0]-1 2 2],'Curvature',[1 1],'LineStyle','--');
 
-rectangle('Position',pos,'Curvature',[1 1]);
-
-resolution = 0.5;  % [m]
+resolution = 0.25;  % [m]
 
 X = -25:resolution:25;
-Y = -25:resolution:25;
+Y = -30:resolution:30;
 
 X_size = size(X,2);
 Y_size = size(Y,2);
 
-scanning_plane = zeros(X_size, Y_size);
+scanning_plane = zeros(Y_size, X_size);
 
 %% 
 
@@ -94,6 +95,8 @@ for x_plane = 1:X_size
 
         inter = 0;
         
+        % Select band to anlyse and make sure to also change the N factor
+        % for averaging
         %for k = 76:226 % <--- activates low freq (landing gear)
         for k = 226:476 % <--- activates high freq (Engine)]
         
@@ -106,17 +109,28 @@ for x_plane = 1:X_size
             
             %inter = inter + g_ct*(x_coef*x_coef_ct)*g / (abs(g.')*abs(g));
             inter = inter + g_ct*(x_coef*x_coef_ct)*g / norm(g);
+
             %inter = inter + g_ct*(x_coef*x_coef_ct)*g;
             %inter = inter + normalize(g_ct*(x_coef*x_coef_ct)*g) ;
+            inter = inter + g_ct*(x_coef*x_coef_ct)*g / norm(g);
 
         end
         
         %inter = inter / (150);
         inter = inter / (250);
         
-        scanning_plane(x_plane, y_plane) = inter;
+        scanning_plane(y_plane, x_plane) = inter;
     end
 end
 
+%%
 figure();
 imagesc(X, Y, abs(scanning_plane))
+daspect([1 1 1])
+xlabel("x position [m]")
+ylabel("y position [m]")
+
+% Enable to save figures to appropriate directory
+% ax = gca;
+% % Requires R2020a or later
+% exportgraphics(ax,'Figures\HighFreq_compact.png','Resolution',300) 
