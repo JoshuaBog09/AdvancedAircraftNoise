@@ -1,5 +1,5 @@
 %% Assignment 6: Advanced Aircraft Noise
-% By: Elisabeth and Joshua
+% By: Elisabeth and Joshua and Atze
 
 clear;
 
@@ -40,12 +40,10 @@ cp1 = pi/2 - atan((2*pi*f*L)./(R));
 figure(3);
 semilogx(f, 20*log10(abs(c1)))
 hold on
+yline(-3)
 semilogx(f, 20*log10(abs(c2)))
 
 figure(4);
 semilogx(f, cp2*180/pi)
 hold on
 semilogx(f, cp1*180/pi)
-
-%% Excersise 2
-
