@@ -12,6 +12,10 @@ This repository contains the code developed during for the follow-up course adva
 
 3. [Aircraft Noise Prediction Program](https://github.com/JoshuaBog09/AdvancedAircraftNoise/blob/main/assignment3/Advanced_Aircraft_Noise_Assignment_3.pdf): This assignment completely moves away from the fourier transformation topics explored within the previous two assignments. Within the assignment the focus was put onto the prediction of noise generation, created by various aircraft components. The model is based on the ANOPP model developed by NASA, however for the matlab implementation a summary provided by the professor was utilized. After the implantation of the model a comparison was made to measurement data to observe the behavior, and potential differences.
 
+4. [2D Beamforming](https://github.com/JoshuaBog09/AdvancedAircraftNoise/blob/main/assignment4/Advanced_Aircraft_Noise_Assignment_4.pdf): The first of a two part assignment relating to beamforming. Beamforming can be an incredibly powerful tool, to investigate where a sound source is located. However before it can be utilized, it is important to realize that not all beam formed data can be used effectively. This data is not necessarily wrong, it is more an artifact/ consequence of the modelling method. Within this assignment a beamform procedure was performed on under water sound measurements.
+
+5. [3D Beamforming](https://github.com/JoshuaBog09/AdvancedAircraftNoise/blob/main/assignment5/Advanced_Aircraft_Noise_Assignment_5.pdf): (My personal favorite assignment). Within this assignment similar methods to assignment 4 was used, however now the a three dimensional sound measurement array was used. By smartly delaying an summing the various output it is possible to determine the location of a frequency dependent sound source.
+
 |**High Frequencies** | **Low Frequencies** |
 :-----:|:-----:
 ![High Frequencies](./assignment5/Figures/HighFreq.png) | ![Low frequencies](./assignment5/Figures/LowFreq.png) 
@@ -19,10 +23,6 @@ This repository contains the code developed during for the follow-up course adva
 |**Microphone array**|
 :----:
 |![Microphone Array](./assignment5/Figures/MicrophoneArray.png)|
-
-4. [2D Beamforming](https://github.com/JoshuaBog09/AdvancedAircraftNoise/blob/main/assignment4/Advanced_Aircraft_Noise_Assignment_4.pdf): The first of a two part assignment relating to beamforming. Beamforming can be an incredibly powerful tool, to investigate where a sound source is located. However before it can be utilized, it is important to realize that not all beam formed data can be used effectively. This data is not necessarily wrong, it is more an artifact/ consequence of the modelling method. Within this assignment a beamform procedure was performed on under water sound measurements.
-
-5. [3D Beamforming](https://github.com/JoshuaBog09/AdvancedAircraftNoise/blob/main/assignment5/Advanced_Aircraft_Noise_Assignment_5.pdf): (My personal favorite assignment). Within this assignment similar methods to assignment 4 was used, however now the a three dimensional sound measurement array was used. By smartly delaying an summing the various output it is possible to determine the location of a frequency dependent sound source.
 
 6. [Practical](https://github.com/JoshuaBog09/AdvancedAircraftNoise/blob/main/assignment5/Advanced_Aircraft_Noise_Assignment_5.pdf): Within the last assignment of the course a more practical approach was taken. Here various circuits were analyzed for there phase, and gain behavior as a function of frequency. With the end of goal of constructing a filter.
 
