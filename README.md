@@ -14,11 +14,11 @@ This repository contains the code developed during for the follow-up course adva
 
 |**High Frequencies** | **Low Frequencies** |
 :-----:|:-----:
-![High Frequencies](.\assignment5\Figures\HighFreq.png) | ![Low frequencies](.\assignment5\Figures\LowFreq.png) 
+![High Frequencies](./assignment5/Figures/HighFreq.png) | ![Low frequencies](./assignment5/Figures/LowFreq.png) 
 
 |**Microphone array**|
 :----:
-![Microphone Array](.\assignment5\Figures\MicrophoneArray.png)
+![Microphone Array](./assignment5/Figures/MicrophoneArray.png)
 
 
 4. [2D Beamforming](https://github.com/JoshuaBog09/AdvancedAircraftNoise/blob/main/assignment4/Advanced_Aircraft_Noise_Assignment_4.pdf): The first of a two part assignment relating to beamforming. Beamforming can be an incredibly powerful tool, to investigate where a sound source is located. However before it can be utilized, it is important to realize that not all beam formed data can be used effectively. This data is not necessarily wrong, it is more an artifact/ consequence of the modelling method. Within this assignment a beamform procedure was performed on under water sound measurements.
