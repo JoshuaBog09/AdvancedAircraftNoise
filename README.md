@@ -12,11 +12,12 @@ This repository contains the code developed during for the follow-up course adva
 
 3. [Aircraft Noise Prediction Program](https://github.com/JoshuaBog09/AdvancedAircraftNoise/blob/main/assignment3/Advanced_Aircraft_Noise_Assignment_3.pdf): This assignment completely moves away from the fourier transformation topics explored within the previous two assignments. Within the assignment the focus was put onto the prediction of noise generation, created by various aircraft components. The model is based on the ANOPP model developed by NASA, however for the matlab implementation a summary provided by the professor was utilized. After the implantation of the model a comparison was made to measurement data to observe the behavior, and potential differences.
 
-**High Frequencies** | **Low Frequencies**
-: -----:|:------:
+|**High Frequencies** | **Low Frequencies** |
+:-----:|:-----:
 ![High Frequencies](.\assignment5\Figures\HighFreq.png) | ![Low frequencies](.\assignment5\Figures\LowFreq.png) 
 
-**Microphone array**
+|**Microphone array**|
+:----:
 ![Microphone Array](.\assignment5\Figures\MicrophoneArray.png)
 
 
