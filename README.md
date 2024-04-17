@@ -24,7 +24,7 @@ This repository contains the code developed during for the follow-up course adva
 :----:
 |![Microphone Array](./assignment5/Figures/MicrophoneArray.png)|
 
-6. [Practical](https://github.com/JoshuaBog09/AdvancedAircraftNoise/blob/main/assignment5/Advanced_Aircraft_Noise_Assignment_5.pdf): Within the last assignment of the course a more practical approach was taken. Here various circuits were analyzed for there phase, and gain behavior as a function of frequency. With the end of goal of constructing a filter.
+6. [Practical](https://github.com/JoshuaBog09/AdvancedAircraftNoise/blob/main/assignment6/Advanced_Aircraft_Noise_Assignment_6.pdf): Within the last assignment of the course a more practical approach was taken. Here various circuits were analyzed for there phase, and gain behavior as a function of frequency. With the end of goal of constructing a filter.
 
 ## citation
 - Prof. dr. ir. M. Snellen Prof. dr. D.G. Simons. Digital Signal Processing an introduction. Delft, Netherlands:
